@@ -28,8 +28,24 @@ ls -l cw20_base.wasm
 sha256sum cw20_base.wasm
 ```
 
-Or for a production-ready (optimized) build, run a build command in the
-the repository root: https://github.com/CosmWasm/cw-plus#compiling.
+Or for a production-ready (optimized) build, make sure you have Docker installed and run these build commands in the
+the repository root:
+```
+# Generate the Cargo.lock file without the --locked flag
+docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  --platform linux/arm64/v8 \
+  rust:1.78 sh -c "cd /code && cargo generate-lockfile"
+
+# Run the CosmWasm optimizer Docker image
+docker run --rm -v "$(pwd)":/code \
+  --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
+  --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
+  --platform linux/arm64/v8 \
+  cosmwasm/optimizer-arm64:0.16.0 .
+  ```
+
 
 ## Importing this contract
 

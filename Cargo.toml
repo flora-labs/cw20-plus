@@ -1,6 +1,6 @@
 [package]
 name = "cw20-base"
-version.workspace = true
+version = "2.0.1"
 authors = ["Ethan Frey", "Flora Team"]
 edition = "2021"
 description = "Basic implementation of a CosmWasm-20 compliant token"
